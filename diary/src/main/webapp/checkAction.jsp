@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import = "java.sql.*" %>
-<%@ page import="java.net.*"%>
-
+<%@page import="java.net.*"%>
 <%
 	//로그인(인증) 분기
 	// diary.login.my_session -> "ON"일때만 "OFF"면 redirect("loginForm.jsp") <-- db설정하는 것
@@ -27,73 +26,27 @@
 		conn.close();
 		return; //코드 진행을 끝냄 ex)메소드 끝낼 때 return사용
 	} 
+	//if문에 안 걸릴 때는 현재값이 OFF가 아니고 ON이다. -> OFF로 변경후 loginForm으로 redirect
 	
-	String sql2 = "SELECT menu, COUNT(*) cnt FROM lunch GROUP BY menu";
+	String checkDate = request.getParameter("checkDate");
+	
+	String sql2 = "select lunch_date lunchDate from lunch where lunch_date=?";
+	// 결과가 있으면 이미 이날짜에 일기가 있다 -> 이 날짜로는 입력 x
 	PreparedStatement stmt2 = null;
 	ResultSet rs2 = null;
 	stmt2 = conn.prepareStatement(sql2);
+	stmt2.setString(1,checkDate);
 	rs2 = stmt2.executeQuery();
-	
-	
-	
-	
-%>
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="UTF-8">
-	<title>ststsLunch</title>
-</head>
-<body>
-	<h1>statsLunch</h1>
-	
-	<%
-		int maxHeight = 500;
-		double totalCnt = 0;
-		while(rs2.next()){	
-			totalCnt =totalCnt + rs2.getInt("cnt");
+	if(rs2.next()) {
+		// 이날짜 일기 기록 불가능(이미 존재)	
+		response.sendRedirect("/diary/lunchOne.jsp?checkDate="+checkDate+"&ck=F");
+	} else{
+		// 이날짜 일기 기록 가능
+		response.sendRedirect("/diary/lunchOne.jsp?checkDate="+checkDate+"&ck=T");
 	}
 	
-	rs2.beforeFirst();
-	
-	%>
-	<div>
-		전체 투표수 : <%=(int)(totalCnt) %>
-	</div>
-	<table border = "1" style="width: 150px">
-		<tr>
-			<%
-				String[] c = {"#FF0000","#FF8224","#FFFF24","#1DDB16","#0054FF"};
-				int i = 0;
-				while(rs2.next()){
-					int h = (int)(maxHeight*(rs2.getInt("cnt")/totalCnt));
-			%>		
-					<td style = "vertical-align:bottom;">
-						<div style = "height:<%=h%>px; background-color: <%=c[i]%>;
-						text-align:center;">
-							<%=rs2.getInt("cnt") %>
-						</div>
-					</td>
-			<%		
-					i=i+1;
-				}
-			%>
-		</tr>
-		<tr>
-			<%
-				// 커스의 위치를 다시 처음으로 하는 코드
-				rs2.beforeFirst();
-				while(rs2.next()){
-			%>	
-					<td><%=rs2.getString("menu") %></td>
-			<%
-				}	
-			%>
-		</tr>
-		
-		
 	
 	
-	</table>
-</body>
-</html>
+
+%>
+

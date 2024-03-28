@@ -27,7 +27,7 @@
 				"/diary/lunchOne.jsp");
 	} else{
 		response.sendRedirect(
-				"/diary/lunchOne.jsp");
+				"/diary/statsLunch.jsp");
 	}
 %>
 

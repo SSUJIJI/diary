@@ -18,7 +18,7 @@
 	
 	if(row == 0){ // 삭제실패 -> 비밀번호
 		response.sendRedirect(
-				"/diary/lunchOne.jsp");
+				"/diary/statsLunch.jsp");
 	} else {
 		response.sendRedirect("/diary/lunchOne.jsp");	
 	}
