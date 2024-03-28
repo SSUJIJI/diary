@@ -143,6 +143,12 @@
 			<span>
 				<a href = "/diary/logout.jsp" class="btn btn-outline-light">로그아웃</a>
 			</span>
+			<span>
+				<a href = "/diary/lunchOne.jsp" class="btn btn-outline-light">투표하기</a>
+			</span>
+			<span>
+				<a href = "/diary/statsLunch.jsp" class ="btn btn-outline-light">투표보기</a>
+			</span>	
 			<div>
 				<a href="/diary/diary.jsp" class = "text-white">다이어리 모양으로 보기</a>
 				<a href="/diary/diaryList.jsp" class = "text-white">게시판 모양으로 보기</a>
