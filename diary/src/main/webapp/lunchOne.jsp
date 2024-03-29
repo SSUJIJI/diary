@@ -83,6 +83,8 @@
 <% 
 	if(rs2.next()){
 %>			<form>
+				<a href="/diary/diary.jsp" class = "text-white">다이어리로 돌아가기</a>
+				<h1>투표보기</h1>
 			<table class= "table table-bordered text-white rounded">
 				<tr>
 					<td>date</td>
@@ -110,6 +112,7 @@
 <%		
 	}else{
 %>		
+			<a href="/diary/diary.jsp" class = "text-white">다이어리로 돌아가기</a>
 			<h1>투표하기</h1>
 			<table>
 				<form method = "post" action = "/diary/checkAction.jsp">

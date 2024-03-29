@@ -69,6 +69,9 @@
 </head>
 <body class = "na c container p-5 my-5 border text-white text-center rounded" style = "background-size:100%;background-image:url(/diary/img/sea.jpg)">
 	<div>
+	<div>
+			<a href="/diary/diary.jsp" class = "text-white">다이어리로 돌아가기</a>
+	</div>
 	<h1>상세내용</h1>
 	<%
 		if(rs2.next()){
@@ -106,13 +109,49 @@
 	<%
 			}
 	%>
-	
+	<hr>
 	<div >
 		<a href = "/diary/deleteDiaryAction.jsp?diaryDate=<%=rs2.getString("diaryDate") %>" class = "btn btn-outline-light">지우기</a>
 		<a href = "/diary/updateDiaryForm.jsp?diaryDate=<%=rs2.getString("diaryDate") %>" class = "btn btn-outline-light">수정하기</a>
 	</div>
 		</div>
+	<hr>
+		<!-- 댓글 리스트 -->
+		<%	
+			
+			String sql1 = "select comment_no commentNo, memo, create_date createDate from comment where diary_date = ?";
+			PreparedStatement stmt1 = null;
+			ResultSet rs1 = null;
+			stmt1 = conn.prepareStatement(sql1);
+			stmt1.setString(1,diaryDate);
+			rs1 = stmt1.executeQuery();
+			
+			System.out.println(stmt1);
+		%>
 		
+			<table border = "1" style = " margin-left:400px;">
+			<%
+				while(rs1.next()){
+			%>
+					<tr >
+						<td ><%=rs1.getString("memo") %></td>
+						<td><%=rs1.getString("createDate") %>&nbsp;</td>
+						<td><a href = "/diary/deleteComment.jsp?commentNo=<%=rs1.getInt("commentNo")%>&diaryDate=<%=diaryDate%>" class = "text-white">삭제</a></td>
+					</tr>	
+			<%
+				}
+			%>
+			</table>
+		
+		<!-- 댓글 추가 폼 -->
+	<br>
+	<div >
+		<form method="post" action = "/diary/addCommentAction.jsp">
+			<input type = "hidden" name = diaryDate value = "<%=diaryDate %> " >
+			<textarea rows="2" cols="50" name = "memo" class = "btn btn-outline-light" ></textarea>
+			<button type = "submit" class = "btn btn-outline-light">댓글입력</button>			
+		</form>
+	</div>
 	
 </body>
 </html>

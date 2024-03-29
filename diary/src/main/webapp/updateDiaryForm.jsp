@@ -83,6 +83,14 @@
 							<td><input type = "text" name = "diaryDate" readonly=readonly value = <%=diaryDate %> class="rounded btn btn-outline-light"></td>
 						</tr>
 						<tr>
+							<td>feeling : </td>
+							<td><input type = "radio" name = "feeling" value="&#128516;" class="rounded btn btn-outline-light">&#128516;
+							<input type = "radio" name = "feeling" value="&#128557;" class="rounded btn btn-outline-light">&#128557;
+							<input type = "radio" name = "feeling" value="&#129298;" class="rounded btn btn-outline-light">&#129298;
+							<input type = "radio" name = "feeling" value="&#128545;" class="rounded btn btn-outline-light">&#128545;
+							<input type = "radio" name = "feeling" value="&#128543;" class="rounded btn btn-outline-light">&#128543;</td>
+						</tr>
+						<tr>
 							<td>title : </td>
 							<td><input type = "text" name = "title" class="rounded btn btn-outline-light"></td>
 						</tr>

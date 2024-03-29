@@ -58,12 +58,18 @@
 	.c {
 		border-radius:6px;
 	}
+	a:hover{color:white; text-decoration:none;}	
+	a.groove{border-style: groove; }
+	a.active{color:white; text-decoration:none;}
 	
 	</style>	
 	
 </head>
 <body class = "na container p-5 my-5 border text-white" style = "background-size:100%;background-image:url(/diary/img/sea.jpg)" >
 		<table>
+			<div>
+				<a href="/diary/diary.jsp" class = "text-white">다이어리로 돌아가기</a>
+			</div>
 		<tr>
 			<td>checkDate :<%=checkDate %></td>
 		</tr>

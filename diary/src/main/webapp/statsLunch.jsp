@@ -61,7 +61,8 @@
 	</style>
 </head>
 <body class = "na c container p-5 my-5 border text-white text-center rounded" style = "background-size:100%;background-image:url(/diary/img/sea.jpg)">
-	<h1>statsLunch</h1>
+	<a href="/diary/diary.jsp" class = "text-white">다이어리로 돌아가기</a>
+	<h1>투표 결과</h1>
 	
 	<%
 				double maxHeight = 500;
@@ -72,13 +73,14 @@
 				
 				rs2.beforeFirst();
 	%>
-	<div>
+	<div >
 		전체 투표수 : <%=(int)totalCnt%>
 	</div>
-	<table border="1" style="width: 200px;" >
+	<div  class="opacity-75 text-align: center;"  >
+	<table border="1" style="width: 300px;  margin: auto;"  >
 		<tr>
 			<%	
-				String[] c = {"#FF0000", "#FF5E00", "#FFE400", "#1DDB16", "#0054FF"};
+				String[] c = {"#B2CCFF", "#6799FF", "#4374D9", "#003399", "#002266"};
 				int i = 0;
 				while(rs2.next()) {
 					int h = (int)(maxHeight * (rs2.getInt("cnt")/totalCnt));
@@ -108,6 +110,7 @@
 			%>
 		</tr>
 	</table>
+	</div>
 	
 	
 	
