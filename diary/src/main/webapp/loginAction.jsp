@@ -2,39 +2,33 @@
 <%@ page import = "java.sql.*"%>
 <%@page import="java.net.*"%>
 <%
-
-	//로그인(인증) 분기
-	// diary.login.my_session -> "ON"일때만 redirect("diary.jsp") <-- db설정하는 것
+	// 0. 로그인(인증)분기
+		String loginMember = (String)(session.getAttribute("loginMember"));
+	// session.getAttribute()는 찾는 변수가 없으면 null값을 반환한다. why? 로그인을 한 적이 없으니까.
+	// loginMember가 null이면 로그아웃상태, 아니면 로그인 상태 
+	System.out.println(loginMember + "<-loginMember");
 	
-	String id = request.getParameter("id");
-	String pw = request.getParameter("pw");
+	// loginForm페이지는 로그아웃상태에서만 출력된다.
+	//if문으로 loginMember가 null일 때, 아닐 때 구분
 	
-	String sql1 = "select my_session mySession from login";
-	Class.forName("org.mariadb.jdbc.Driver");
-	Connection conn = null;
-	PreparedStatement stmt1 = null;
-	ResultSet rs1 = null;
-	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/diary","root","java1234");
-	stmt1 = conn.prepareStatement(sql1);
-	rs1 = stmt1.executeQuery();
-	String mySession = null;
-	if(rs1.next()){
-		mySession = rs1.getString("mySession");
-	}
-	if(mySession.equals("ON")) {
-		response.sendRedirect("/diary/diary.jsp"); // <-get 방식
-		// db자원반납 (return전에)
-		rs1.close();
-		stmt1.close();
-		conn.close();
-		return; //코드 진행을 끝냄 ex)메소드 끝낼 때 return사용
-	}
-	//1. 요청값 분석
+	if(loginMember != null){
+		response.sendRedirect("/diary/diary/jsp");
+		return;
+	} 
+	
+	// loginMember가 null이다. -> session 공간에 loginMember 변수를 생성하고 
+%>
+<%
+	//1. 요청값 분석 -> 로그인 성공 -> session에 loginMember변수를 생성 
+	
 	String memberId = request.getParameter("memberId");
 	String memberPw = request.getParameter("memberPw");
 	
 	String sql2= "select member_id memberId From member where member_id=? and member_pw = ?";
+	Class.forName("org.mariadb.jdbc.Driver");
+	Connection conn = null;
 	PreparedStatement stmt2 = null;
+	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/diary","root","java1234");
 	ResultSet rs2 = null;
 	stmt2 = conn.prepareStatement(sql2);
 	stmt2.setString(1, memberId);
@@ -46,10 +40,15 @@
 		//로그인 성공
 		//diary.login.my_session -> "ON" 변경 (update쿼리 만들어야함)-> update my_session = 'ON'
 		System.out.println("로그인 성공");
+		/*
 		String sql3 = "update login set my_session = 'ON',on_date = now() where my_session='OFF'";
 		PreparedStatement stmt3 = conn.prepareStatement(sql3);
 		int row = stmt3.executeUpdate();
 		System.out.println(row + "<-row");
+		*/
+		//로그인 성공시 DB값 설정 -> session변수 설정
+		session.setAttribute("loginMember", rs2.getString("memberId"));
+		
 		response.sendRedirect("/diary/diary.jsp");
 		
 	} else{
@@ -59,12 +58,5 @@
 		response.sendRedirect("/diary/loginForm.jsp?errMsg="+errMsg);
 	}
 	
-	rs1.close();
-	stmt1.close();
-	
-	rs2.close();
-	stmt2.close();
-	
-	conn.close();
 	
 %>

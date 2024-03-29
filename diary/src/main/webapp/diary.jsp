@@ -6,28 +6,15 @@
 	//로그인(인증) 분기
 	// diary.login.my_session -> "ON"일때만 "OFF"면 redirect("loginForm.jsp") <-- db설정하는 것
 	
-	String sql1 = "select my_session mySession from login";
-	Class.forName("org.mariadb.jdbc.Driver");
-	Connection conn = null;
-	PreparedStatement stmt1 = null;
-	ResultSet rs1 = null;
-	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/diary","root","java1234");
-	stmt1 = conn.prepareStatement(sql1);
-	rs1 = stmt1.executeQuery();
-	String mySession = null;
-	if(rs1.next()){
-		mySession = rs1.getString("mySession");
-	}
-	if(mySession.equals("OFF")) {
+	String loginMember = (String)(session.getAttribute("loginMember"));
+	if(loginMember == null) {
 		String errMsg = URLEncoder.encode("잘못된 접근입니다. 로그인 먼저 해주세요.","utf-8");
 		response.sendRedirect("/diary/loginForm.jsp?errMsg="+errMsg); // <-get 방식
-		// db자원반납 (return전에)
-		rs1.close();
-		stmt1.close();
-		conn.close();
-		return; //코드 진행을 끝냄 ex)메소드 끝낼 때 return사용
-	} 
-	//if문에 안 걸릴 때 
+		return;
+	}
+	
+%>
+<%	
 	
 	
 	//달력 만들기
@@ -59,6 +46,9 @@
 	// DB에서 tYear와 tMonth에 해당되는 diary 목록을 추출한다.
 	
 	String sql2 = "select diary_date diaryDate, day(diary_date) day,left(title,5), feeling, title from diary where year(diary_date)=? and month(diary_date)=?";
+	Class.forName("org.mariadb.jdbc.Driver");
+	Connection conn = null;
+	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/diary","root","java1234");
 	PreparedStatement stmt2 = null;
 	ResultSet rs2 = null;
 	stmt2 = conn.prepareStatement(sql2);
