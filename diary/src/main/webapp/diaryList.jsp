@@ -113,20 +113,49 @@
 				while(rs2.next()){
 			%>
 					<tr>
-						<td><a href="/diary/diaryOne.jsp?diaryDate=<%=rs2.getString("diaryDate")%>"><%=rs2.getString("diaryDate")%></a></td>
+						<td><a href="/diary/diaryOne.jsp?diaryDate=<%=rs2.getString("diaryDate")%>" class = "text-white"><%=rs2.getString("diaryDate")%></a></td>
 						<td><%=rs2.getString("title") %></td>
 					</tr>		
 			<%		
 				}
 			%>
 		</table>
-		
-		<div>
-			<a href = "/diary/diaryList.jsp?<%=currentPage-1 %>" class = "text-white">이전</a>
-			<a href = "/diary/diaryList.jsp?<%=currentPage+1 %>" class = "text-white">다음</a>
-		</div>
-		<div>
-			<%=currentPage %>/<%=lastPage %>
+		<nav aria-label="Page navigation example">
+			<ul class="pagination">
+			<%
+				if(currentPage>1){
+			%>	
+					<li class = "page-item">
+						<a href = "/diary/diaryList.jsp?currentPage=1" class = " rounded btn btn-outline-light">처음으로</a>
+					</li>
+					<li class = "page-item">	
+						<a href = "/diary/diaryList.jsp?"<%=currentPage-1%>  class = " rounded btn btn-outline-light">이전페이지</a>
+					</li>
+			<%	} else{
+			%>	
+					<li class="page-item disabled">
+						<a href = "/diary/diaryList.jsp?currentPage=1" class = "rounded btn btn-outline-light" >처음으로</a>
+					</li>
+					<li class="page-item disabled">
+						<a href = "/diary/diaryList.jsp?"<%=currentPage-1%> class = "rounded btn btn-outline-light">이전페이지</a>
+					</li>
+			<%
+				} if(currentPage<lastPage){
+			%>
+					<li class = "page-item">
+						<a href = "/diary/diaryList.jsp?currentPage=<%=lastPage%>" class = " rounded btn btn-outline-light" style = "margin-left: 920px;">마지막으로</a>
+					</li>
+					<li class = "page-item">
+						<a href = "/diary/diaryList.jsp?"<%=currentPage+1%>  class = " rounded btn btn-outline-light">다음페이지</a>
+					</li>
+			<%						
+				}
+			
+			%>
+				</ul>
+			</nav>
+		<div >
+			<%=currentPage %>/<%=lastPage %>Page
 		</div>
 		<form method = "get" action= "/diary/diaryList.jsp">
 			<div>
